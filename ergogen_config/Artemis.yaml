@@ -1,0 +1,223 @@
+points:
+  zones:
+    matrix:
+      anchor:
+        rotate: -25
+      columns:
+        outer:
+          key:
+            column_net: P3
+          rows:
+            bottom:
+            home:
+            top:
+              skip: True
+        pinky:
+          key:
+            splay: -6
+            origin: [-5, -10]
+            stagger: 4
+            column_net: P4
+        ring:
+          key:
+            stagger: 12
+            column_net: P5
+        middle:
+          key:
+            stagger: 4
+            column_net: P6
+        index:
+          key:
+            stagger: -10
+            column_net: P7
+        inner:
+          key:
+            spread: 20
+            splay: -3
+            stagger: -4
+            column_net: P8
+      rows:
+        bottom:
+          row_net: P15
+        home:
+          row_net: P14
+        top:
+          row_net: P16 
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [10, -30]
+      columns:
+        near:
+          key:
+            splay: -20
+            autobind: 10
+            column_net: P8
+        home:
+          key:
+            spread: 21.25
+            splay: -10
+            origin: [-11.75, -9]
+            size: [cx*1.5, cy]
+            column_net: P9
+      rows:
+        thumb:
+            row_net: P10
+  mirror:
+    ref: matrix_outer_home
+    distance: 240
+
+outlines:
+  min:
+    - what: rectangle
+      where: true
+      size: [cx + 2, cy + 2]
+      fillet: 2
+  board_left:
+    - what: polygon
+      points:
+        - ref: matrix_outer_bottom
+          shift: [-(cx*0.75 + 2), -(cy*0.75 + 2)]
+        - ref: matrix_outer_home
+          shift: [-(cx*0.75 + 2), cy*0.5 + 2]
+        - ref: matrix_pinky_top
+          shift: [-(cx*0.6 + 2), cy*0.6 + 2]
+        - ref: matrix_ring_top
+          shift: [-(cx*0.5), cy*0.75 + 2]
+        - ref: matrix_middle_top
+          shift: [-(cx*0.5 + 2), cy*0.75 + 2]
+        - ref: matrix_middle_top
+          shift: [cx*0.5 + 2, cy*0.75 + 2]
+        - ref: matrix_inner_top
+          shift: [cx*0.75 + 2, cy*0.75 + 2]
+        - ref: matrix_inner_bottom
+          shift: [cx*0.6 + 2, 0]
+        - ref: thumbfan_home_thumb
+          shift: [cx*0.6 + 2, cy*0.6 + 2]
+        - ref: thumbfan_home_thumb
+          shift: [cx*0.75 + 2, -(cy*0.75 + 2)]
+        - ref: thumbfan_near_thumb
+          shift: [-(cx*0.7 + 2), -(cy*0.75 + 2)]
+        - ref: matrix_inner_bottom
+          shift: [-(cx*0.6 + 2), -(cy*0.5 + 2)]
+        - ref: matrix_index_bottom
+          shift: [-(cx*0.6 + 2), -(cy*0.75 + 2)]
+        - ref: matrix_middle_bottom
+          shift: [0, -(cy*0.75 + 2)]
+        - ref: matrix_ring_bottom
+          shift: [0, -(cy*0.75 + 2)]
+        - ref: matrix_pinky_bottom
+          shift: [cx*0.7, -(cy*0.75 + 2)]
+        - ref: matrix_outer_bottom
+          shift: [0,-(cy*0.75 + 2)]
+      fillet: 6
+      operation: stack # "stack" for debug, "add" for prod
+  board_right:
+    - what: polygon
+      points:
+        - ref: mirror_matrix_outer_bottom
+          shift: -[-(cx*0.75 + 2), -(cy*0.75 + 2)]
+        - ref: mirror_matrix_outer_home
+          shift: -[-(cx*0.75 + 2), cy*0.5 + 2]
+        - ref: mirror_matrix_pinky_top
+          shift: -[-(cx*0.6 + 2), cy*0.6 + 2]
+        - ref: mirror_matrix_ring_top
+          shift: -[-(cx*0.5), cy*0.75 + 2]
+        - ref: mirror_matrix_middle_top
+          shift: -[-(cx*0.5 + 2), cy*0.75 + 2]
+        - ref: mirror_matrix_middle_top
+          shift: -[cx*0.5 + 2, cy*0.75 + 2]
+        - ref: mirror_matrix_inner_top
+          shift: -[cx*0.75 + 2, cy*0.75 + 2]
+        - ref: mirror_matrix_inner_bottom
+          shift: -[cx*0.6 + 2, 0]
+        - ref: mirror_thumbfan_home_thumb
+          shift: -[cx*0.6 + 2, cy*0.6 + 2]
+        - ref: mirror_thumbfan_home_thumb
+          shift: -[cx*0.75 + 2, -(cy*0.75 + 2)]
+        - ref: mirror_thumbfan_near_thumb
+          shift: -[-(cx*0.7 + 2), -(cy*0.75 + 2)]
+        - ref: mirror_matrix_inner_bottom
+          shift: -[-(cx*0.6 + 2), -(cy*0.5 + 2)]
+        - ref: mirror_matrix_index_bottom
+          shift: -[-(cx*0.6 + 2), -(cy*0.75 + 2)]
+        - ref: mirror_matrix_middle_bottom
+          shift: -[0, -(cy*0.75 + 2)]
+        - ref: mirror_matrix_ring_bottom
+          shift: -[0, -(cy*0.75 + 2)]
+        - ref: mirror_matrix_pinky_bottom
+          shift: -[cx*0.7, -(cy*0.75 + 2)]
+        - ref: mirror_matrix_outer_bottom
+          shift: -[0,-(cy*0.75 + 2)]
+      fillet: 6
+      operation: stack # "stack" for debug, "add" for prod
+  final:
+    - board_left
+    - what: rectangle
+      where: true
+      size: [cx, cy]
+      operation: subtract
+
+pcbs:
+  left:
+    outlines:
+      main: 
+        outline: board_left
+    footprints:
+      choc_hotswap:
+        where: /^(?:matrix|thumbfan).*/
+        what: choc
+        params:
+            keycaps: true
+            reverse: false
+            hotswap: true
+            from: "{{column_net}}"
+            to: "{{colrow}}"
+      diode:
+        what: diode
+        where: /^(?:matrix|thumbfan).*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [-7, 2]
+          rotate: -90
+      pro_micro:
+        what: promicro
+        params:
+          orientation: up
+        where:
+          ref: matrix_inner_home
+          shift: [-5, 2.5]
+          rotate: -183
+  right:
+    outlines:
+      main: 
+        outline: board_right
+    footprints:
+      choc_hotswap:
+        where: /^mirror_(?:matrix|thumbfan).*/
+        what: choc
+        params:
+            keycaps: true
+            reverse: false
+            hotswap: true
+            from: "{{column_net}}"
+            to: "{{colrow}}"
+      diode:
+        what: diode
+        where: /^mirror_(?:matrix|thumbfan).*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [-7, 2]
+          rotate: -90
+      pro_micro:
+        what: promicro
+        params:
+          orientation: up
+        where:
+          ref: matrix_inner_home
+          shift: [-5, 2.5]
+          rotate: -183
